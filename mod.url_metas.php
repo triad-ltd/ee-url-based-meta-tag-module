@@ -1,22 +1,4 @@
-<?php
-
-/*
-=====================================================
- ExpressionEngine - by EllisLab
------------------------------------------------------
- http://expressionengine.com/
------------------------------------------------------
- Copyright (c) 2003 - 2008 EllisLab, Inc.
-=====================================================
- THIS IS COPYRIGHTED SOFTWARE
- PLEASE READ THE LICENSE AGREEMENT
- http://expressionengine.com/docs/license.html
-=====================================================
- File: mod.weblog.php
------------------------------------------------------
- Purpose: Weblog class
-=====================================================
-*/
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 if ( ! defined('EXT'))
 {
@@ -62,4 +44,3 @@ class Url_metas {
   
 }
 // END CLASS
-?>

@@ -1,31 +1,6 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
-=====================================================
- ExpressionEngine - by EllisLab
------------------------------------------------------
- http://expressionengine.com/
------------------------------------------------------
- Copyright (c) 2003 - 2008 EllisLab, Inc.
-=====================================================
- THIS IS COPYRIGHTED SOFTWARE
- PLEASE READ THE LICENSE AGREEMENT
- http://expressionengine.com/docs/license.html
-=====================================================
- File: mcp.url_metas.php
------------------------------------------------------
- Purpose: URL Meta Class
-=====================================================
-*/
-
-if ( ! defined('EXT'))
-{
-    exit('Invalid file request');
-}
-
-
-
-class Url_metas_CP {
+class Url_metas_mcp {
 
   var $version			= '0.2';
   var $base				= '';
@@ -661,4 +636,3 @@ EOT;
 
 }
 // END CLASS
-?>
