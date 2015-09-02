@@ -13,14 +13,18 @@ class Url_metas {
 	var $url = "";
 	var $adminlink = "";
 
+	function __construct() {
+		$this->EE =& get_instance();
+	}
+
     /**	----------------------------------------
     /**	Output Metas for the URL
     /**	----------------------------------------*/
     function Url_metas()
     {
     	global $DB, $TMPL, $FNS;
-			
-    	$url 				= $FNS->fetch_current_uri();
+
+    		$url 				= $FNS->fetch_current_uri();
 			$url 				= substr($url,-1) == "/" ? substr($url,0,-1) : $url;
 			$query			= $DB->query("SELECT * FROM exp_url_metas WHERE Url = '$url' OR Url = '$url/';");
 			if ($query->num_rows < 1)
