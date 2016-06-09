@@ -1,17 +1,18 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Gmaps Module Control Panel File
+ * URL Metas
  *
- * @package             Gmaps for EE2
- * @author              Rein de Vries (info@reinos.nl)
- * @copyright           Copyright (c) 2013 Rein de Vries
- * @license  			http://reinos.nl/add-ons/commercial-license
- * @link                http://reinos.nl/add-ons/gmaps
+ * @package             Url metas for EE3
+ * @author              Stephen Sweetland <stephen@triad.uk.com>
+ * @copyright           Copyright (c) 2016 Triad Ltd
+ * @link                http://triad.uk.com
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors','on');
 
-class Urlmetas_mcp {
+class Url_metas_mcp {
 
 	var $version 	= '2.0';
 	var $base 		= '';
@@ -22,6 +23,8 @@ class Urlmetas_mcp {
 	public function __construct( $switch = TRUE )
 	{
 		global $IN;
+
+		var_dump($IN);
 
 		$this->base = BASE.AMP.'C=modules'.AMP.'M=Url_metas'.AMP;
 
@@ -46,7 +49,7 @@ class Urlmetas_mcp {
 				case 'defaults':	$this->default_metas();
 				break;
 
-				default:			$this->urlmetas_home();
+				default:			$this->home();
 				break;
 
 			}
@@ -58,7 +61,7 @@ class Urlmetas_mcp {
 	/** ----------------------------------------
 	/**  Module Homepage
 	/** ----------------------------------------*/
-	public function urlmetas_home()
+	public function home()
 	{
 		global $DSP, $LANG;
 
@@ -178,16 +181,13 @@ EOT;
 
 		$nav = array();
 
-		foreach ( $nav_array as $key => $val )
-		{
+		foreach ( $nav_array as $key => $val ) {
 			$url = '';
 
-			if ( is_array($val) )
-			{
+			if ( is_array($val) ) {
 				$url = $this->base;
 
-				foreach ( $val as $k => $v )
-				{
+				foreach ( $val as $k => $v ) {
 					$url .= $k.'='.$v;
 				}
 			}
@@ -232,8 +232,7 @@ EOT;
 
 		$sql[] = "INSERT INTO exp_url_metas (`title`, `keywords`, `description`, `def`) VALUES ('default, keywords, here', 'default, keywords, here', 'default keywords in here', 'YES')";
 
-		foreach ($sql as $query)
-		{
+		foreach ($sql as $query) {
 			$DB->query($query);
 		}
 
@@ -260,8 +259,7 @@ EOT;
 
 		$sql[] = "DROP TABLE IF EXISTS exp_url_metas";
 
-		foreach ($sql as $query)
-		{
+		foreach ($sql as $query) {
 			$DB->query($query);
 		}
 
@@ -336,101 +334,98 @@ EOT;
 		$urls = $DB->query("SELECT count(url) as totalurls FROM exp_url_metas WHERE url != '' AND `def` = 'NO' ORDER BY url ASC");
 		$totalrows = $urls->row['totalurls'];
 
-		if ($totalrows < 1)
-		{
+		if ($totalrows < 1) {
 			$r .= $DSP->qdiv('itemWrapper', '&nbsp;');
 			$r .=  $DSP->qdiv('highlight', $LANG->line('no_entries'));
 		}
 
 
-		if ($totalrows > 0){
+		if ($totalrows > 0) {
 
-		/** ----------------------------------------
-		/** Table header
-		/** ----------------------------------------*/
-
-
-		$r .=  $DSP->toggle();
-		$DSP->body_props .= ' onload="magic_check()" ';
-		$r .= $DSP->magic_checkboxes();
+			/** ----------------------------------------
+			/** Table header
+			/** ----------------------------------------*/
+			$r .=  $DSP->toggle();
+			$DSP->body_props .= ' onload="magic_check()" ';
+			$r .= $DSP->magic_checkboxes();
 
 
-		$form_url = 'C=modules'.AMP.'M=Url_metas'.AMP.'P=edit_metas';
+			$form_url = 'C=modules'.AMP.'M=Url_metas'.AMP.'P=edit_metas';
 
-		$r .=  $DSP->form_open(array('action' => $form_url, 'name' => 'target', 'id' => 'target'));
-		$r .= $DSP->table_open(array('class' => 'tableBorder', 'width' => '100%'));
+			$r .=  $DSP->form_open(array('action' => $form_url, 'name' => 'target', 'id' => 'target'));
+			$r .= $DSP->table_open(array('class' => 'tableBorder', 'width' => '100%'));
 
 
-		$top[] = array(
-			'text'  => $LANG->line("table_id_header"),
-			'class' => 'tableHeadingAlt',
-			'width' =>  '5%'
-		);
+			$top[] = array(
+				'text'  => $LANG->line("table_id_header"),
+				'class' => 'tableHeadingAlt',
+				'width' =>  '5%'
+			);
 
-		$top[] = array(
-			'text'  => $LANG->line("table_url_header"),
-			'class' => 'tableHeadingAlt',
-			'width' =>  '35%'
-		);
+			$top[] = array(
+				'text'  => $LANG->line("table_url_header"),
+				'class' => 'tableHeadingAlt',
+				'width' =>  '35%'
+			);
 
-		$top[] = array(
-			'text'  => $LANG->line("table_keywords_header"),
-			'class' => 'tableHeadingAlt',
-			'width' =>  '60%'
-		);
+			$top[] = array(
+				'text'  => $LANG->line("table_keywords_header"),
+				'class' => 'tableHeadingAlt',
+				'width' =>  '60%'
+			);
 
-		$r .= $DSP->table_row( $top );
+			$r .= $DSP->table_row( $top );
 
 
 
-		/** ----------------------------------------
-		/** Table contents
-		/** ----------------------------------------*/
-		if ($IN->GBL('row','GET') != "")
-		{
-			$row_count = $IN->GBL('row','GET');
-		}
-
-		$urls = $DB->query("SELECT * FROM exp_url_metas WHERE url != '' AND `def` = 'NO' ORDER BY url ASC LIMIT ".$row_count.", ".$row_limit);
-
-		$rows = array();
-		$i = 0;
-
-		foreach ( $urls->result as $row )
-		{
-			unset($rows);
-			$rows[] = $row['url_id'];
-			$rows[] = $DSP->anchor( BASE.AMP.'C=modules'.AMP.'M=Url_metas'.AMP.'P=edit'.AMP.'url_id='.$row['url_id'], $row['url'] );
-			$rows[] = $row['keywords'];
-			$r .= $DSP->table_qrow( ($i++ % 2) ? 'tableCellOne' : 'tableCellTwo', $rows);
-		}
-
-		$r .= $DSP->table_c();
-
-
-		/** --------------------------------------------
-		/**  Pagination
-		/** --------------------------------------------*/
-
-		if ($totalrows > $row_limit)
-		{
-			$row_count = ( ! $IN->GBL('row')) ? 0 : $IN->GBL('row');
-
-			$url = BASE.AMP.'C=modules'.AMP.'M=Url_metas'.AMP.'P=view';
-
-			if ( $IN->GBL('url') )
+			/** ----------------------------------------
+			/** Table contents
+			/** ----------------------------------------*/
+			if ($IN->GBL('row','GET') != "")
 			{
-				$url .= AMP.'url_id='.$IN->GBL('url_id');
+				$row_count = $IN->GBL('row','GET');
 			}
 
-			$r .= $DSP->pager(
-				$url,
-				$totalrows,
-				$row_limit,
-				$row_count,
-				'row'
-			);
-		}
+			$urls = $DB->query("SELECT * FROM exp_url_metas WHERE url != '' AND `def` = 'NO' ORDER BY url ASC LIMIT ".$row_count.", ".$row_limit);
+
+			$rows = array();
+			$i = 0;
+
+			foreach ( $urls->result as $row )
+			{
+				unset($rows);
+				$rows[] = $row['url_id'];
+				$rows[] = $DSP->anchor( BASE.AMP.'C=modules'.AMP.'M=Url_metas'.AMP.'P=edit'.AMP.'url_id='.$row['url_id'], $row['url'] );
+				$rows[] = $row['keywords'];
+				$r .= $DSP->table_qrow( ($i++ % 2) ? 'tableCellOne' : 'tableCellTwo', $rows);
+			}
+
+			$r .= $DSP->table_c();
+
+
+			/** --------------------------------------------
+			/**  Pagination
+			/** --------------------------------------------*/
+
+			if ($totalrows > $row_limit)
+			{
+				$row_count = ( ! $IN->GBL('row')) ? 0 : $IN->GBL('row');
+
+				$url = BASE.AMP.'C=modules'.AMP.'M=Url_metas'.AMP.'P=view';
+
+				if ( $IN->GBL('url') )
+				{
+					$url .= AMP.'url_id='.$IN->GBL('url_id');
+				}
+
+				$r .= $DSP->pager(
+					$url,
+					$totalrows,
+					$row_limit,
+					$row_count,
+					'row'
+				);
+			}
 
 		}
 

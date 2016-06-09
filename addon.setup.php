@@ -9,11 +9,14 @@
  * @link                http://triad.uk.com
  */
 
+require_once(PATH_THIRD.'urlmetas/config.php');
+
 return array(
-	'author'      => 'Triad Ltd',
-	'author_url'  => 'http://triad.uk.com',
-	'name'        => 'URL Metas',
-	'description' => 'Lets you set url-specific meta information. FTW.',
-	'version'     => '2.0',
-	'namespace'   => 'User\Addons\UrlMetas'
+	'namespace'   		=> 'User\Addons\Url_metas',
+	'name'        		=> 'URL Metas',
+	'author'      		=> 'Triad Ltd',
+	'author_url'  		=> 'http://triad.uk.com',
+	'description' 		=> 'Lets you set url-specific meta information. FTW.',
+	'settings_exist' 	=> true,
+	'version'     		=> URL_METAS_VER,
 );
