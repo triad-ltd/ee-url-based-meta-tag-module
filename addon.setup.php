@@ -9,7 +9,7 @@
  * @link                http://triad.uk.com
  */
 
-require_once(PATH_THIRD.'urlmetas/config.php');
+require_once(PATH_THIRD.'url_metas/common.php');
 
 return array(
 	'namespace'   		=> 'User\Addons\Url_metas',
