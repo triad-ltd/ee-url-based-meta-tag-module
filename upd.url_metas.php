@@ -9,7 +9,7 @@
  * @link                http://triad.uk.com
  */
 
-require_once(PATH_THIRD.'url_metas/config.php');
+require_once(PATH_THIRD.'url_metas/common.php');
 
 class Url_metas_upd
 {
@@ -55,10 +55,10 @@ class Url_metas_upd
 		global $DB;
 
 		ee()->db->where('module_name', URL_METAS_CLASS);
-		ee()->db->delete();
+		ee()->db->delete('modules');
 
 		ee()->db->where('module_name', URL_METAS_CLASS_CP);
-		ee()->db->delete();
+		ee()->db->delete('modules');
 
 		// at some point we'll look at making this use dbforge
 		ee()->db->query("DROP TABLE IF EXISTS exp_url_metas");
