@@ -90,10 +90,10 @@ class Url_metas_mcp {
 	/** ----------------------------------------
 	/**  Add URL Metas
 	/** ----------------------------------------*/
-	public function add()
+	public function add($new_url = '')
 	{
 		$this->vals['def'] = 'NO';
-		$this->vals['url'] = '/';
+		$this->vals['url'] = $new_url == '' ? '/' : base64_decode($new_url);
 
 		return $this->metas_form(lang('add_url_metas'));
 	}

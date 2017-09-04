@@ -1,52 +1,45 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-if ( ! defined('EXT'))
-{
-	exit('Invalid file request');
-}
+class Url_metas {
 
-
-class Url_metas_upd {
-
-	var $return_data 	= "";
-	var $tagdata 		= "";
-	var $url 			= "";
-	var $adminlink 		= "";
-
-	function __construct() {
-		$this->EE =& get_instance();
-	}
+	var $return_data 	= '';
+	var $tagdata 		= '';
+	var $url 			= '';
+	var $adminlink 		= '';
 
 	/**	----------------------------------------
 	/**	Output Metas for the URL
 	/**	----------------------------------------*/
-	function Url_metas()
-	{
+	function __construct() {
 		global $DB, $TMPL, $FNS;
 
-			// $url 			= $FNS->fetch_current_uri();
-			// $url 			= substr($url,-1) == "/" ? substr($url,0,-1) : $url;
-			// $query			= $DB->query("SELECT * FROM exp_url_metas WHERE Url = '$url' OR Url = '$url/';");
-			// if ($query->num_rows < 1) {
-			// 	$query		= $DB->query("SELECT * FROM exp_url_metas WHERE `def` LIKE 'YES';");
-			// 	$adminlink	= $url == "" ? "" : "<p><a href=\"/sys/index.php?C=modules&amp;M=Url_metas&amp;P=add&amp;".
-			// 									"url=".base64_encode($url)."\" target=\"blank\">".
-			// 									"Add URL Specific Metas for This Page (Currently Using Defaults)".
-			// 									"</a></p>";
-			// } else {
-			// 	$adminlink	= $url == "" ? "" : "<p><a href=\"/sys/index.php?C=modules&amp;M=Url_metas&amp;P=edit&amp;".
-			// 									"url_id=".$query->row['url_id']."\" target=\"blank\">".
-			// 									"Edit Metas for This Page".
-			// 									"</a></p>";
-			// }
+		$url 			= ee()->uri->uri_string;
+		$url 			= substr($url,-1) == '/' ? substr($url,0,-1) : $url;
+		$query			= ee()->db->select('*')
+								  ->from('url_metas')
+								  ->where(array('url' => $url))
+								  ->get();
 
-			// $tagdata 		= $TMPL->tagdata;
-			// $tagdata		= $TMPL->swap_var_single("meta_title", $query->row['title'], $tagdata);
-			// $tagdata		= $TMPL->swap_var_single("meta_keywords", $query->row['keywords'], $tagdata);
-			// $tagdata		= $TMPL->swap_var_single("meta_description", $query->row['description'], $tagdata);
-			// $tagdata		= $TMPL->swap_var_single("admin_link", $adminlink, $tagdata);
+		$sys_folder 	= ee()->config->item('system_folder');
 
-			// $this->return_data = $tagdata;
+		if ($query->num_rows < 1) {
+			$query		= ee()->db->select('*')->from('url_metas')->where(array('def' => 'YES'))->get();
+			$adminlink	= $url == '' ? '' : '<a href=/'.$sys_folder.'/'.ee('CP/URL','addons/settings/url_metas/add/'.base64_encode($url)).' target=blank>'.
+											'Add URL Specific Metas for This Page (Currently Using Defaults)'.
+											'</a>';
+		} else {
+			$adminlink	= $url == '' ? '' : '<p><a href=/'.$sys_folder.'/'.ee('CP/URL','addons/settings/url_metas/edit/'.$query->row('url_id')).' target=blank>'.
+											'Edit Metas for This Page'.
+											'</a>';
+		}
+
+		$tagdata 		= ee()->TMPL->tagdata;
+		$tagdata		= ee()->TMPL->swap_var_single('meta_title', $query->row('title'), $tagdata);
+		$tagdata		= ee()->TMPL->swap_var_single('meta_keywords', $query->row('keywords'), $tagdata);
+		$tagdata		= ee()->TMPL->swap_var_single('meta_description', $query->row('description'), $tagdata);
+		$tagdata		= ee()->TMPL->swap_var_single('meta_admin_link', $adminlink, $tagdata);
+
+		$this->return_data = $tagdata;
 	}
 
 }
