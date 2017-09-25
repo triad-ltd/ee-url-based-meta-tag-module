@@ -22,5 +22,5 @@ return array(
 	'namespace'   		=> 'Url_metas',
 	'name'        		=> 'URL Metas',
 	'settings_exist' 	=> true,
-	'version'     		=> URL_METAS_VER,
+	'version'     		=> URL_METAS_VERSION,
 );
