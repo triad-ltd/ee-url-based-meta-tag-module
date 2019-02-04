@@ -6,6 +6,4 @@
     {/exp:url_metas}
 
 
-    {exp:url_metas}
-    {meta_admin_link}
-    {/exp:url_metas}
+    {exp:url_metas:meta_admin_link}
