@@ -47,7 +47,7 @@ class Url_metas_mcp {
 	/**  Module Homepage
 	/** ----------------------------------------*/
 	public function index() {
-		$table = ee('CP/Table', array('autosort' => TRUE, 'autosearch' => TRUE));
+		$table = ee('CP/Table', array('autosort' => TRUE, 'autosearch' => TRUE, 'limit' => 0));
 		$table->setColumns(array(
 			'URL',
 			'Title',
@@ -60,7 +60,7 @@ class Url_metas_mcp {
 		$rows = ee()->db->select('url_id,url,title')->from('url_metas')->where('def', 'NO')->get()->result_array();
 		$urls = array();
 		foreach ($rows as $row) {
-			$urls[] = array('url' => $row['url'],
+			$urls[] = array('url' => substr($row['url'], 0, 70),
 				'title' => $row['title'],
 				'toolbar' => array('toolbar_items' => array(
 					'edit' => array(
