@@ -41,7 +41,7 @@ class Url_metas {
 			$query = ee()->db->select('*')->from('url_metas')->where(['def' => 'YES'])->get();
 			$adminlink = '<div class="url_meta_admin_link">
                 <a href=' . $sys_folder . '/' . ee('CP/URL', 'addons/settings/url_metas/add/' . base64_encode($this->url) . (empty($this->url) ? '' : '?')) . ' target=blank>' .
-				'Add meta data for this page (Currently Using Defaults)' .
+				'Add meta data for this page (currently using defaults).' .
 				'</a></div>';
 		} else {
 			$adminlink = '<div class="url_meta_admin_link">
