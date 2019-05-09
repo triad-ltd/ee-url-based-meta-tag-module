@@ -224,7 +224,7 @@ class Url_metas_mcp {
 						'title' => array(
 							'type' => 'text',
 							'value' => $this->vals['title'],
-							'required' => TRUE,
+							'required' => false,
 							'attrs' => $this->delete ? ' readonly' : '',
 						),
 					),
@@ -235,7 +235,7 @@ class Url_metas_mcp {
 						'keywords' => array(
 							'type' => 'text',
 							'value' => $this->vals['keywords'],
-							'required' => TRUE,
+							'required' => false,
 							'attrs' => $this->delete ? ' readonly' : '',
 						),
 					),
@@ -246,7 +246,7 @@ class Url_metas_mcp {
 						'description' => array(
 							'type' => 'textarea',
 							'value' => $this->vals['description'],
-							'required' => false,
+							'required' => true,
 							'attrs' => $this->delete ? ' readonly' : '',
 						),
 					),
