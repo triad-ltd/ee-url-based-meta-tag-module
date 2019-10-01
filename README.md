@@ -2,10 +2,24 @@
 
 int the `<body`
 
-    {if logged_in_member_group == "1"}
-	    {exp:url_metas:meta_admin_link}
+    {if logged_in}
+    {exp:url_metas:meta_admin_link}
+    <style>
+        .url_meta_admin_link {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            z-index: 1000;
+        }
+        .url_meta_admin_link a {
+            background: black;
+            color: white;
+            font-size: 12px;
+            padding: 8px;
+        }
+    </style>
     {/if}
-
+        
 in the `<head>`
 
     {exp:url_metas parse="inward"}
