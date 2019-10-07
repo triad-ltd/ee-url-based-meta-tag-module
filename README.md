@@ -1,3 +1,6 @@
+**Changelog**
+5.0.0 - Change the 'add metas' hyperlink to use a querystring parameter instead of base64
+
 **Example implementation:**
 
 int the `<body`
@@ -19,7 +22,7 @@ int the `<body`
         }
     </style>
     {/if}
-        
+
 in the `<head>`
 
     {exp:url_metas parse="inward"}
