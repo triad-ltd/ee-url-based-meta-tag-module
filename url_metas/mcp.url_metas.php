@@ -17,23 +17,22 @@ class Url_metas_mcp
 {
 
     public $version = URL_METAS_VERSION;
-    private $vals = array('url_id' => null,
+    private $vals = [
+        'url_id' => null,
         'url' => '',
         'disable_url' => false,
         'delete' => false,
         'def' => '',
         'title' => '',
         'keywords' => '',
-        'description' => '');
+        'description' => '',
+    ];
 
     private $error_msg;
     private $base_url;
     private $url_id;
     private $delete = false;
 
-    /** ----------------------------------------
-    /**  Module Setup
-    /** ----------------------------------------*/
     public function __construct($switch = true)
     {
         ee()->load->helper('form');
@@ -43,11 +42,7 @@ class Url_metas_mcp
         $segments = explode('/', $url->path);
         $this->url_id = @$segments[5] ? $segments[5] : '';
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Module Homepage
-    /** ----------------------------------------*/
     public function index()
     {
         $table = ee('CP/Table', ['autosort' => true, 'autosearch' => true, 'limit' => 0]);
@@ -86,11 +81,7 @@ class Url_metas_mcp
 
         return $this->output($vars, lang('url_metas_list'), 'table');
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Add URL Metas
-    /** ----------------------------------------*/
     public function add()
     {
         $this->vals['def'] = 'NO';
@@ -98,22 +89,14 @@ class Url_metas_mcp
 
         return $this->metas_form(lang('add_url_metas'));
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Default URL Metas
-    /** ----------------------------------------*/
     public function default_metas()
     {
         $row = ee()->db->select('url_id')->from('url_metas')->where('def', 'YES')->get()->row_array();
 
         return $this->edit($row['url_id']);
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Edit URL Metas
-    /** ----------------------------------------*/
     public function edit($url_id = false)
     {
         $url_id = $url_id ? $url_id : $this->url_id;
@@ -132,15 +115,15 @@ class Url_metas_mcp
 
         return $this->metas_form($form_heading);
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Save URL Metas
-    /** ----------------------------------------*/
     public function save()
     {
-        $data = array();
-        $data['url'] = ee()->input->get_post('url');
+        $data = [];
+        if ($_POST['def'] == 'YES') {
+            $data['url'] = 'defaults';
+        } else {
+            $data['url'] = ee()->input->get_post('url');
+        }
         $data['title'] = ee()->input->get_post('title');
         $data['keywords'] = ee()->input->get_post('keywords');
         $data['description'] = ee()->input->get_post('description');
@@ -161,11 +144,7 @@ class Url_metas_mcp
         }
 
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Add URL Metas
-    /** ----------------------------------------*/
     public function delete()
     {
         $row = ee()->db->select('*')->from('url_metas')->where('url_id', $this->url_id)->get()->row_array();
@@ -182,11 +161,7 @@ class Url_metas_mcp
 
         return $this->metas_form(lang('delete_url_metas'));
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Save URL Metas
-    /** ----------------------------------------*/
     public function confirm_delete()
     {
         if ($_POST['url_id'] == '') {
@@ -199,100 +174,91 @@ class Url_metas_mcp
                 ee()->functions->redirect(ee('CP/URL')->make('addons/settings/url_metas')->setQueryStringVariable('ed', 1));
             }
         }
-
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Output for Control Panel
-    /** ----------------------------------------*/
     public function metas_form($heading)
     {
         $view = 'form';
 
-        $vars['sections'] = array(
-            array(
-                array(
+        $vars['sections'] = [
+            [
+                [
                     'title' => 'form_url',
-                    'fields' => array(
-                        'url' => array(
+                    'fields' => [
+                        'url' => [
                             'type' => 'text',
                             'value' => $this->vals['url'],
                             'required' => false,
                             'attrs' => $this->vals['disable_url'] | $this->delete ? ' readonly' : '',
-                        ),
-                        'def' => array(
+                        ],
+                        'def' => [
                             'type' => 'hidden',
                             'value' => $this->vals['def'],
-                        ),
-                        'url_id' => array(
+                        ],
+                        'url_id' => [
                             'type' => 'hidden',
                             'value' => $this->vals['url_id'],
-                        ),
-                    ),
-                ),
-                array(
+                        ],
+                    ],
+                ],
+                [
                     'title' => 'form_title',
-                    'fields' => array(
-                        'title' => array(
+                    'fields' => [
+                        'title' => [
                             'type' => 'text',
                             'value' => $this->vals['title'],
                             'required' => false,
                             'attrs' => $this->delete ? ' readonly' : '',
-                        ),
-                    ),
-                ),
-                array(
+                        ],
+                    ],
+                ],
+                [
                     'title' => 'form_keywords',
-                    'fields' => array(
-                        'keywords' => array(
+                    'fields' => [
+                        'keywords' => [
                             'type' => 'text',
                             'value' => $this->vals['keywords'],
                             'required' => false,
                             'attrs' => $this->delete ? ' readonly' : '',
-                        ),
-                    ),
-                ),
-                array(
+                        ],
+                    ],
+                ],
+                [
                     'title' => 'form_description',
-                    'fields' => array(
-                        'description' => array(
+                    'fields' => [
+                        'description' => [
                             'type' => 'textarea',
                             'value' => $this->vals['description'],
                             'required' => false,
                             'attrs' => $this->delete ? ' readonly' : '',
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         // Final view variables we need to render the form
-        $vars += array(
+        $vars += [
             'base_url' => !$this->delete ? ee('CP/URL', 'cp/addons/settings/url_metas/save') :
             ee('CP/URL', 'cp/addons/settings/url_metas/confirm_delete'),
             'cp_page_title' => $heading,
             'save_btn_text' => !$this->delete ? 'save_url_metas' : 'delete_url_metas',
             'save_btn_text_working' => !$this->delete ? 'saving_msg' : 'deleting_msg',
             'alerts_name' => 'url_metas_settings',
-        );
+        ];
 
         return $this->output($vars, $heading, $view);
     }
-    /** END **/
 
-    /** ----------------------------------------
-    /**  Output for Control Panel
-    /** ----------------------------------------*/
     private function output($vars, $heading, $view)
     {
-        // do the output.
-        return array(
+        return [
             'body' => ee('View')->make('url_metas:' . $view)->render($vars),
-            'breadcrumb' => array(ee('CP/URL')->make('addons/settings/url_metas')->compile() => lang('module_name')),
+            'breadcrumb' => [
+                ee('CP/URL')->make('addons/settings/url_metas')->compile() => lang('module_name'),
+            ],
             'heading' => $heading,
-        );
+        ];
     }
-    /** END **/
+
 }
-// END CLASS

@@ -17,6 +17,7 @@ class Url_metas
 
         $tagdata = ee()->TMPL->tagdata;
 
+        // fetch page specific tags if there are any
         $query = ee()->db->select('*')
             ->from('url_metas')
             ->where(['url' => $this->url])
@@ -26,6 +27,17 @@ class Url_metas
             $tagdata = ee()->TMPL->swap_var_single('meta_title', $query->row('title'), $tagdata);
             $tagdata = ee()->TMPL->swap_var_single('meta_keywords', $query->row('keywords'), $tagdata);
             $tagdata = ee()->TMPL->swap_var_single('meta_description', $query->row('description'), $tagdata);
+        }
+
+        // fetch defaults if they are set
+        $query = ee()->db->select('*')
+            ->from('url_metas')
+            ->where(['def' => 'YES'])
+            ->get();
+        if ($query->num_rows() > 0) {
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_title', $query->row('title'), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_keywords', $query->row('keywords'), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_description', $query->row('description'), $tagdata);
         }
 
         $this->return_data = $tagdata;
