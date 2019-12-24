@@ -56,12 +56,12 @@ class Url_metas
             $query = ee()->db->select('*')->from('url_metas')->where(['def' => 'YES'])->get();
             $url = ee('CP/URL')->make('addons/settings/url_metas/add', ['url' => $this->url]);
             $adminlink = '<div class="url_meta_admin_link">
-                <a href=' . $sys_folder . '/' . $url . ' target=blank>' .
+                <a href=' . $sys_folder . '/' . $url . ' target=_blank>' .
                 'Add meta data for this page (currently using defaults).' .
                 '</a></div>';
         } else {
             $adminlink = '<div class="url_meta_admin_link">
-            <a href=' . $sys_folder . '/' . ee('CP/URL', 'addons/settings/url_metas/edit/' . $query->row('url_id')) . ' target=blank>' .
+            <a href=' . $sys_folder . '/' . ee('CP/URL', 'addons/settings/url_metas/edit/' . $query->row('url_id')) . ' target=_blank>' .
                 'Edit meta data for this page' .
                 '</a></div>';
         }
