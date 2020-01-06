@@ -14,6 +14,7 @@ class Url_metas
     {
         $this->url = ee()->uri->uri_string;
         $this->url = substr($this->url, -1) == '/' ? substr($this->url, 0, -1) : $this->url;
+        $this->url = ee()->TMPL->fetch_param('url', $this->url);
 
         $tagdata = ee()->TMPL->tagdata;
 
