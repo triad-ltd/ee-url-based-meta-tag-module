@@ -1,4 +1,5 @@
 **Changelog**
+5.0.4 - Return 'escaped_meta_description' variable to be used in conditionals wherein unescaped data is being used
 5.0.3 - Add 'url' parameter to get a specific page meta
 5.0.1 - Change how defaults work, update head snippet
 5.0.0 - Change the 'add metas' hyperlink to use a querystring parameter instead of base64
