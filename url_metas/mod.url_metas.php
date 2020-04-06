@@ -25,9 +25,9 @@ class Url_metas
             ->get();
 
         if ($query->num_rows() > 0) {
-            $tagdata = ee()->TMPL->swap_var_single('meta_title', $query->row('title'), $tagdata);
-            $tagdata = ee()->TMPL->swap_var_single('meta_keywords', $query->row('keywords'), $tagdata);
-            $tagdata = ee()->TMPL->swap_var_single('meta_description', $query->row('description'), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('meta_title', $this->cleanse($query->row('title')), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('meta_keywords', $this->cleanse($query->row('keywords')), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('meta_description', $this->cleanse($query->row('description')), $tagdata);
             $tagdata = ee()->TMPL->swap_var_single('escaped_meta_description', addslashes($query->row('description')), $tagdata);
         }
 
@@ -37,12 +37,16 @@ class Url_metas
             ->where(['def' => 'YES'])
             ->get();
         if ($query->num_rows() > 0) {
-            $tagdata = ee()->TMPL->swap_var_single('default_meta_title', $query->row('title'), $tagdata);
-            $tagdata = ee()->TMPL->swap_var_single('default_meta_keywords', $query->row('keywords'), $tagdata);
-            $tagdata = ee()->TMPL->swap_var_single('default_meta_description', $query->row('description'), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_title', $this->cleanse($query->row('title')), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_keywords', $this->cleanse($query->row('keywords')), $tagdata);
+            $tagdata = ee()->TMPL->swap_var_single('default_meta_description', $this->cleanse($query->row('description')), $tagdata);
         }
 
         $this->return_data = $tagdata;
+    }
+
+    private function cleanse($str) {
+        return str_replace("'",'&#39;', $str);
     }
 
     public function meta_admin_link()
