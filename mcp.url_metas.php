@@ -85,7 +85,7 @@ class Url_metas_mcp
     public function add()
     {
         $this->vals['def'] = 'NO';
-        $this->vals['url'] = !empty($_GET['url']) ? $_GET['url'] : '';
+        $this->vals['url'] = !empty($_GET['u']) ? $_GET['u'] : '';
 
         return $this->metas_form(lang('add_url_metas'));
     }

@@ -60,7 +60,7 @@ class Url_metas
 
         if ($query->num_rows < 1) {
             $query = ee()->db->select('*')->from('url_metas')->where(['def' => 'YES'])->get();
-            $url = ee('CP/URL')->make('addons/settings/url_metas/add', ['url' => $this->url]);
+            $url = ee('CP/URL')->make('addons/settings/url_metas/add', ['u' => $this->url]);
             $adminlink = '<div class="url_meta_admin_link">
                 <a href=' . $sys_folder . '/' . $url . ' target=_blank>' .
                 'Add meta data for this page (currently using defaults).' .
